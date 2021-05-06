@@ -72,7 +72,7 @@ def in_unit_circle(p: Point) -> bool:
         return False 
 
 
-n = 10000
+n = 20
 coiso = Grid(-2, 2, -2, 2, n, n)
 
 fig, axs = plt.subplots(1)
@@ -81,9 +81,9 @@ n_points_inside = 0
 for point in coiso:
     if in_unit_circle(point): 
         n_points_inside += 1 
-        # axs.scatter(point.x, point.y, color="b", s=5)
+        axs.scatter(point.x, point.y, color="b")
     else:
-        # axs.scatter(point.x, point.y, color="k", s=5)
+        axs.scatter(point.x, point.y, color="k")
         pass
 
 angles = np.linspace(0, 2*np.pi, 1000)
@@ -92,4 +92,4 @@ axs.plot(np.cos(angles), np.sin(angles))
 axs.set_aspect('equal')
 
 print((n_points_inside/(n**2))*16)
-# plt.show()
+plt.show()
