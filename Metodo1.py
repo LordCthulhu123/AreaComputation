@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 
 @dataclass
 class Point:
+    """
+        Implementa uma noção de ponto do plano alternativa ao usado de tuples.
+    """
     x: float 
     y: float
 
@@ -41,13 +44,22 @@ class Grid:
         return 
 
     def __getitem__(self, key):
+        """
+            Define indexação do Grid por meio de pares ordenados.
+        """
         return self.data[key[0]][key[1]]
 
     def __iter__(self):
+        """
+            O define como iterável.
+        """
         self.it_row, self.it_column = 0, 0
         return self 
     
     def __next__(self):
+        """
+            Faz a iteração pegando ponto a ponto e linha a linha.
+        """
         if self.it_row < self.div_y:
             p = self.data[self.it_row][self.it_column]
 
@@ -62,6 +74,9 @@ class Grid:
             raise StopIteration 
 
     def get_area(self):
+        """
+            Retorna a área de cada retângulo do Grid.
+        """
         return self.base * self.altura
 
 
