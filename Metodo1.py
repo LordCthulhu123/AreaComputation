@@ -1,11 +1,16 @@
+from typing import Callable
 from dataclasses import dataclass 
 import numpy as np
 import matplotlib.pyplot as plt
+
 
 @dataclass
 class Point:
     """
         Implementa uma noção de ponto do plano alternativa ao usado de tuples.
+        São implementadas a adição e multiplicação por escalar tradicionais.
+        Eu poderia ter usado números complexos ao invés disso, mas eu sou um imbecil.
+        Eu fiz isso só porque eu queria usar .x e .y
     """
     x: float 
     y: float
@@ -27,7 +32,11 @@ class Point:
 
 
 class Grid:
-    def __init__(self, x0, x1, y0, y1, num_div_x, num_div_y):
+    """
+        Define a divisão de um retângulo em diversas partes.
+    """
+    def __init__(self, x0: float, x1: float, y0: float, y1: float,
+                num_div_x: int, num_div_y: int) -> None:
         self.data = []
 
         passo_x, passo_y = (x1 - x0) / num_div_x, (y1 - y0) / num_div_y
@@ -86,25 +95,32 @@ def in_unit_circle(p: Point) -> bool:
     else: 
         return False 
 
+def Calculate_area_and_show(is_in: Callable[..., bool],
+                            x0=-2, x1=2, y0=-2, y1=2,
+                            num_div_x=20, num_div_y=20, **configs) -> float:
+    
+    fig, axs = plt.subplots(1)
 
-n = 20
-coiso = Grid(-2, 2, -2, 2, n, n)
+    internal_grid = Grid(float(x0), float(x1), float(y0), float(y1), int(num_div_x), int(num_div_y))
 
-fig, axs = plt.subplots(1)
+    n_points_inside = 0
+    for point in internal_grid:
+        if in_unit_circle(point): 
+            n_points_inside += 1 
+            axs.scatter(point.x, point.y, color="b")
+        else:
+            axs.scatter(point.x, point.y, color="k")
+            pass
 
-n_points_inside = 0
-for point in coiso:
-    if in_unit_circle(point): 
-        n_points_inside += 1 
-        axs.scatter(point.x, point.y, color="b")
-    else:
-        axs.scatter(point.x, point.y, color="k")
-        pass
+    if "aditional_ploting" in configs:
+        configs["aditional_ploting"](fig, axs)
 
-angles = np.linspace(0, 2*np.pi, 1000)
-axs.plot(np.cos(angles), np.sin(angles))
+    axs.set_aspect('equal')
+    plt.show()
+    return (n_points_inside/(num_div_x * num_div_y))*((x1 - x0)*(y1 - y0))
 
-axs.set_aspect('equal')
 
-print((n_points_inside/(n**2))*16)
-plt.show()
+a = Calculate_area_and_show(in_unit_circle, **{"aditional_ploting": lambda f, a: a.plot(
+                        np.cos(np.linspace(0, 2*np.pi, 100)), np.sin(np.linspace(0, 2*np.pi, 100)))})
+
+print(a)
