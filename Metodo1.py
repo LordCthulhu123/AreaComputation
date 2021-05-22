@@ -95,6 +95,21 @@ def in_unit_circle(p: Point) -> bool:
     else: 
         return False 
 
+def Calculate_area(is_in: Callable[..., bool],
+                    x0=-2, x1=2, y0=-2, y1=2,
+                    num_div_x=20, num_div_y=20, **configs) -> float:
+
+    internal_grid = Grid(float(x0), float(x1), float(y0), float(y1), int(num_div_x), int(num_div_y))
+    
+    n_points_inside = 0
+    for point in internal_grid:
+        if is_in(point): 
+            n_points_inside += 1 
+        else:
+            pass
+
+    return (n_points_inside/(num_div_x * num_div_y))*((x1 - x0)*(y1 - y0))
+
 def Calculate_area_and_show(is_in: Callable[..., bool],
                             x0=-2, x1=2, y0=-2, y1=2,
                             num_div_x=20, num_div_y=20, **configs) -> float:
@@ -105,11 +120,11 @@ def Calculate_area_and_show(is_in: Callable[..., bool],
 
     n_points_inside = 0
     for point in internal_grid:
-        if in_unit_circle(point): 
+        if is_in(point): 
             n_points_inside += 1 
-            axs.scatter(point.x, point.y, color="b")
+            axs.plot(point.x, point.y, "o", color="b")
         else:
-            axs.scatter(point.x, point.y, color="k")
+            axs.plot(point.x, point.y, "o", color="k")
             pass
 
     if "aditional_ploting" in configs:
@@ -119,8 +134,9 @@ def Calculate_area_and_show(is_in: Callable[..., bool],
     plt.show()
     return (n_points_inside/(num_div_x * num_div_y))*((x1 - x0)*(y1 - y0))
 
-
+"""
 a = Calculate_area_and_show(in_unit_circle, **{"aditional_ploting": lambda f, a: a.plot(
                         np.cos(np.linspace(0, 2*np.pi, 100)), np.sin(np.linspace(0, 2*np.pi, 100)))})
 
 print(a)
+"""
