@@ -22,8 +22,10 @@ def ad(f, a: plt.Axes):
 
     a.plot(np.linspace(0, 5, 1000), 1/np.linspace(0, 5, 1000))
 
+    a.fill_between(np.linspace(1, x, 100), np.zeros(100), 1/np.linspace(1, x, 100), color="yellowgreen")
+
     a.set_xlim(-1, 5)
-    a.set_ylim(-1, 3)
+    a.set_ylim(-1, 2)
     warnings.filterwarnings('default')
 
 
