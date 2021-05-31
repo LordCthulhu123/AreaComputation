@@ -150,13 +150,19 @@ def Calculate_area_and_show(is_in: Callable[..., bool],
 
     internal_grid = Grid(float(x0), float(x1), float(y0), float(y1), int(num_div_x), int(num_div_y))
 
+    size = 5
+    if "markersize" in configs:
+        size = configs["markersize"]
+
     n_points_inside = 0
     for point in internal_grid:
         if is_in(point): 
             n_points_inside += 1 
-            axs.plot(point.x, point.y, "o", color="b") # Marca um ponto azul caso o ponto esteja fora da região
+            # Marca um ponto azul caso o ponto esteja fora da região
+            axs.plot(point.x, point.y, "o", color="b", markersize=size)
         else:
-            axs.plot(point.x, point.y, "o", color="k") # Marca um ponto preto caso o ponto esteja fora da região
+            # Marca um ponto preto caso o ponto esteja fora da região
+            axs.plot(point.x, point.y, "o", color="k", markersize=size) 
             pass
 
     if "aditional_ploting" in configs:
